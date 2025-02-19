@@ -1,8 +1,9 @@
+import java.util.Scanner;
 public class Main {
     public static String compress(String input)
     {
+        StringBuilder answer = new StringBuilder();
         int repeat = 1;
-        String answer = "";
 
         if (input.equals(""))
         {
@@ -18,19 +19,57 @@ public class Main {
             else
             {
                 // Append the character and its count to the result
-                answer += input.charAt(i);
-                answer += String.valueOf(repeat);
+                answer.append(input.charAt(i));
+                answer.append(repeat);
                 repeat = 1; // Reset count for the next character
             }
         }
         // Append the last character and its count
-        answer += input.charAt(input.length() - 1);
-        answer += String.valueOf(repeat);
-        return answer;
+        answer.append(input.charAt(input.length() - 1));
+        answer.append(repeat);
+        return answer.toString();
     }
-    public static void main(String[] args)
+
+
+    public static String decompress(String input)
     {
-        // Test the compress method with an example input
-        System.out.println(compress("aabcccccaaa"));
+        StringBuilder decompressed = new StringBuilder();
+
+        // Iterate through the string, reconstructing it
+        for (int i = 0; i < input.length(); i++)
+        {
+            if (Character.isLetter(input.charAt(i)))
+            {
+                decompressed.append(input.charAt(i)); // Append letter to decompressed string
+            }
+            else
+            {
+                // Repeat the last letter based on the numeric value
+                for (int z = 1; z <  Character.getNumericValue(input.charAt(i)); z++)
+                {
+                    decompressed.append(input.charAt(i - 1)); // Append last letter multiple times
+                }
+            }
+        }
+        return decompressed.toString(); // Convert StringBuilder to String and return
     }
+
+public static void main(String[] args) {
+    
+    //Get user input
+    Scanner scanner = new Scanner(System.in); 
+    
+    
+    System.out.print("Enter a string to compress: ");
+    String input = scanner.nextLine(); // Read user input
+
+    //Print out user input
+    System.out.println("Input: " + input);
+
+    String compressed = compress(input); // Store the compressed result
+    System.out.println("Compressed: " + compressed);
+
+    String decompressed = decompress(compressed); // Use the compressed result for decompression
+    System.out.println("Decompressed: " + decompressed);
+}
 }
